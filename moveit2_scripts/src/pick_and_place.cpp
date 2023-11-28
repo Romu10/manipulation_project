@@ -50,7 +50,7 @@ int main(int argc, char **argv) {
   // Go Home
   RCLCPP_INFO(LOGGER, "Going Home");
 
-  move_group_arm.setNamedTarget("on_table");
+  move_group_arm.setNamedTarget("home");
 
   moveit::planning_interface::MoveGroupInterface::Plan my_plan_arm;
   bool success_arm = (move_group_arm.plan(my_plan_arm) == moveit::core::MoveItErrorCode::SUCCESS);
