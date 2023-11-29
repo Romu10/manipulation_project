@@ -1,6 +1,6 @@
 #include <moveit/move_group_interface/move_group_interface.h>
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
-
+#include <thread> 
 #include <moveit_msgs/msg/display_robot_state.hpp>
 #include <moveit_msgs/msg/display_trajectory.hpp>
 
@@ -104,7 +104,7 @@ int main(int argc, char **argv) {
       approach_waypoints, eef_step, jump_threshold, trajectory_approach);
 
   move_group_arm.execute(trajectory_approach);
-
+  
   // Close Gripper
 
   RCLCPP_INFO(LOGGER, "Close Gripper!");
@@ -116,6 +116,9 @@ int main(int argc, char **argv) {
 
   move_group_gripper.execute(my_plan_gripper);
 
+  std::this_thread::sleep_for(std::chrono::seconds(3));
+
+  
   // Retreat
 
   RCLCPP_INFO(LOGGER, "Retreat from object!");
@@ -124,7 +127,7 @@ int main(int argc, char **argv) {
   target_pose1.position.z += 0.05;
   retreat_waypoints.push_back(target_pose1);
 
-  target_pose1.position.z += 0.04;
+  target_pose1.position.z += 0.03;
   retreat_waypoints.push_back(target_pose1);
 
   moveit_msgs::msg::RobotTrajectory trajectory_retreat;
@@ -155,7 +158,6 @@ int main(int argc, char **argv) {
                      moveit::core::MoveItErrorCode::SUCCESS);
 
   move_group_gripper.execute(my_plan_gripper);
-
 
   rclcpp::shutdown();
   return 0;
